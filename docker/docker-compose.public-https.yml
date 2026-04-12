@@ -1,0 +1,38 @@
+services:
+  antigravity-manager:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: lbjlaq/antigravity-manager
+    container_name: antigravity-manager
+    restart: unless-stopped
+    volumes:
+      - ~/.antigravity_tools:/root/.antigravity_tools
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - API_KEY=${API_KEY:-change-me}
+      - WEB_PASSWORD=${WEB_PASSWORD:-change-me-admin}
+      - ABV_BIND_LOCAL_ONLY=false
+    expose:
+      - "8045"
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: antigravity-caddy
+    restart: unless-stopped
+    depends_on:
+      - antigravity-manager
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -121,6 +121,43 @@ docker build --build-arg USE_MIRROR=true -t antigravity-manager:latest -f docker
 *   **管理界面**: [http://localhost:8045](http://localhost:8045)
 *   **API Base**: [http://localhost:8045/v1](http://localhost:8045/v1)
 
+## 🔒 公網 HTTPS 暴露（推薦）
+
+如果你希望從其他服務器或外網直接訪問，建議使用本目錄新增的 Caddy 反向代理方案，自動簽發 Let's Encrypt 證書。
+
+### 前置條件
+1. 域名（例如 `api.example.com`）已解析到本機公網 IP。
+2. 服務器已放行 `80/tcp` 與 `443/tcp`。
+3. 未被其他進程佔用 80/443 端口。
+
+### 啟動步驟
+1. 在 `docker` 目錄複製環境變量模板：
+
+    `cp .env.public-https.example .env.public-https`
+
+2. 編輯 `.env.public-https`，至少修改：
+    - `DOMAIN`
+    - `LETSENCRYPT_EMAIL`
+    - `API_KEY`
+    - `WEB_PASSWORD`
+
+3. 啟動 HTTPS 棧：
+
+    `docker compose --env-file .env.public-https -f docker-compose.public-https.yml up -d --build`
+
+4. 查看日誌：
+
+    `docker compose --env-file .env.public-https -f docker-compose.public-https.yml logs -f --tail=200`
+
+### 對外地址
+- 管理界面：`https://你的域名`
+- API Base：`https://你的域名/v1`
+
+### 安全建議
+1. 請務必將 `API_KEY` 和 `WEB_PASSWORD` 設為高強度隨機值。
+2. 如需限制來源，可在上層防火牆僅允許可信 IP。
+3. 若已有 Nginx/Caddy/Traefik，請避免重複佔用 80/443，可改為在現有網關新增反代規則到 `antigravity-manager:8045`。
+
 ## 📦 Docker Hub 分發 (推薦)
 若要推送至你的倉庫：
 ```bash
