@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Image Generator</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="panel">
+      <h1>AI Image Generator</h1>
+      <p class="sub">This app calls your own backend, which then calls Antigravity API.</p>
+
+      <form id="form" class="form">
+        <label>
+          Description
+          <textarea id="prompt" rows="4" placeholder="A cinematic cat playing guitar under neon rain" required></textarea>
+        </label>
+
+        <div class="row">
+          <label>
+            Model
+            <input id="model" type="text" value="gemini-3.1-flash-image" />
+          </label>
+          <label>
+            Size
+            <select id="size">
+              <option>1024x1024</option>
+              <option>1280x720</option>
+              <option>720x1280</option>
+              <option>1216x896</option>
+            </select>
+          </label>
+        </div>
+
+        <button id="submitBtn" type="submit">Generate Image</button>
+      </form>
+
+      <p id="status" class="status"></p>
+    </section>
+
+    <section class="result panel">
+      <h2>Result</h2>
+      <div id="output" class="output empty">No image yet.</div>
+    </section>
+  </main>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
