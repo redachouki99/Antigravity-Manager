@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "start:public": "bash scripts/start_public.sh",
     "tauri": "tauri",
     "tauri:debug": "RUST_LOG=debug npm run tauri dev"
   },

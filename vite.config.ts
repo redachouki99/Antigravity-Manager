@@ -17,6 +17,13 @@ export default defineConfig(async () => ({
     port: 1420,
     strictPort: true,
     host: host || false,
+    allowedHosts: [
+      "decades-cartridge-pollution-born.trycloudflare.com",
+      "feels-arthritis-attempting-chan.trycloudflare.com",
+      "localhost",
+      "127.0.0.1",
+      ".trycloudflare.com",
+    ],
     hmr: host
       ? {
         protocol: "ws",
